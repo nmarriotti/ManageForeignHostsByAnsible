@@ -8,4 +8,4 @@ Establishes local repository to resolve package dependencies and creates/sets th
 4. Copy _playbook_create_ansible_user.yml_ to __/etc/ansible__.
 5. Copy _test.yml_ to __/etc/ansible__.
 6. Copy _configure_ansible_user_on_remote_hosts_ to __/home/ansible__.
-7. Update _/etc/ansible/roles/configure_ansible_user/defaults/main.yml_, specifically the ansible user password that will be set. 
+7. Update _/etc/ansible/roles/configure_ansible_user/defaults/main.yml_ accordingly.

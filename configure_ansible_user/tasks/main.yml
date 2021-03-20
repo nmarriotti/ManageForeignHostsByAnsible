@@ -1,0 +1,57 @@
+---
+# tasks file for configure_ansible_user
+
+- name: Install libselinux packages on RHEL6 hosts
+  block:
+    - name: Check if SELinux is set to Enforcing
+      shell: getenforce
+      register: selinux_status
+      changed_when: false
+
+    - name: Install required packages
+      block:
+        - name: Gather package facts
+          package_facts:
+            manager: auto
+
+        - name: Add .repo file
+          yum_repository:
+            name: "{{ REPO_NAME }}"
+            description: "{{ REPO_DESC }}"
+            baseurl: "{{ REPO_BASEURL }}"
+            enabled: "{{ REPO_ENABLED }}"
+            gpgcheck: "{{ REPO_GPGCHECK }}"
+          when: "not 'libselinux-python' in ansible_facts.packages"
+
+        - name: Install packages
+          yum:
+            name: "{{ required_packages }}"
+            disablerepo: "*"
+            enablerepo: "{{ REPO_NAME }}"
+            state: present
+          when: "not 'libselinux-python' in ansible_facts.packages"
+
+        - name: Remove .repo file
+          file:
+            path: "{{ '/etc/yum.repos.d/' + REPO_NAME }}.repo"
+            state: absent
+          when: "not 'libselinux-python' in ansible_facts.packages"
+      when: selinux_status.stdout != "Disabled"
+  when: (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == "6")
+
+- name: Create ansible user
+  user:
+    name: "{{ ANSIBLE_USER }}"
+    shell: "{{ ANSIBLE_SHELL }}"
+    groups: "{{ ANSIBLE_GROUPS }}"
+    uid: "{{ ANSIBLE_UID }}"
+    password: "{{ ANSIBLE_PASS | password_hash('sha512') }}"
+    update_password: on_create
+    create_home: true
+    state: present
+
+- name: Set public SSH key
+  authorized_key:
+    user: "{{ ANSIBLE_USER }}"
+    key: "{{ lookup('file', ANSIBLE_SSH_PUBLIC_KEY) }}"
+    state: present

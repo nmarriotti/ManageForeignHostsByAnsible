@@ -1,0 +1,20 @@
+# This inventory file separates hosts based on credentials.
+# All hosts that use the same credentials should be in the same group..
+
+[group1]
+192.168.1.67
+192.168.1.68
+
+[group1:vars]
+ansible_user=admin
+ansible_ssh_pass=adminpassword
+ansible_sudo_pass=adminpassword
+
+[group2]
+192.168.1.69
+192.168.1.70
+
+[group1:vars]
+ansible_user=administrator
+ansible_ssh_pass=adminpassword
+ansible_sudo_pass=adminpassword

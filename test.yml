@@ -1,0 +1,14 @@
+---
+# Create YUM repository for EL6 hosts missing required packages
+- name: TEST ANSIBLE CONNECTION
+  hosts: remote_servers
+  gather_facts: false
+  ignore_errors: true
+  become: true
+  vars_files:
+    - /etc/ansible/vars/protected_vars.yml
+  tasks:
+    - ping:
+
+
+

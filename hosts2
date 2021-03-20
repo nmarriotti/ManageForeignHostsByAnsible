@@ -1,0 +1,5 @@
+# This inventory file separates hosts based on credentials.
+# All hosts that use the same credentials should be in the same group..
+
+[remote_servers]
+192.168.1.67

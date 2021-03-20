@@ -1,0 +1,20 @@
+---
+# defaults file for configure_ansible_user
+ANSIBLE_USER: ansible
+ANSIBLE_UID: 5000
+ANSIBLE_GROUPS: ["wheel"]
+ANSIBLE_PASS: $3cr37P@$$
+ANSIBLE_SHELL: /bin/bash
+ANSIBLE_SSH_PUBLIC_KEY: /home/ansible/.ssh/id_rsa.pub
+
+required_packages: [
+  "libselinux-python"
+]
+
+# Repository settings
+REPO_NAME: AnsibleCreateUser
+REPO_BASEURL: http://192.168.1.103/repos/el6
+REPO_DESC: Required packages for certain ansible roles
+REPO_ENABLED: true
+REPO_GPGCHECK: false
+

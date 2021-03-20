@@ -1,0 +1,58 @@
+---
+# Create YUM repository for EL6 hosts missing required packages
+- name: CONFIGURE LOCAL REPO FOR PACKAGE DEPENDENCIES 
+  hosts: localhost
+  become: true
+  vars:
+    - PACKAGE_SRC: /etc/ansible/roles/configure_ansible_user/files/
+    - PACKAGE_DEST: /var/www/html/repos/el6
+  vars_files:
+    - /etc/ansible/vars/protected_vars.yml
+  tasks:
+    - name: Create local repo destination directories
+      file:
+        path: "{{ PACKAGE_DEST }}"
+        owner: root
+        group: root
+        recurse: true
+        state: directory
+    
+    - name: Copy packages to repository
+      copy:
+        src: "{{ PACKAGE_SRC }}"
+        dest: "{{ PACKAGE_DEST }}"
+        owner: root
+        group: root
+      register: packages
+
+    - name: Create repository
+      shell: "{{ 'createrepo ' + PACKAGE_DEST }}"
+      when: packages.changed
+
+    - name: Open firewall port 80
+      firewalld:
+        port: 80/tcp
+        permanent: true
+        state: enabled
+      notify:
+        - restart_firewalld
+      when: packages.changed
+
+    - name: Restart HTTPD
+      service:
+        name: httpd
+        state: restarted
+      when: packages.changed
+
+  handlers:
+    - name: restart_firewalld
+      service:
+        name: firewalld
+        state: restarted
+
+# Connect using remote host local credentials
+- name: CONFIGURE HOSTS TO BE MANAGED BY ANSIBLE
+  hosts: all
+  become: true
+  roles:
+    - configure_ansible_user

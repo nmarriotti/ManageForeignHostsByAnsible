@@ -14,12 +14,12 @@ ansible_sudo_pass=adminpassword
 192.168.1.69
 192.168.1.70
 
-[group1:vars]
+[group2:vars]
 ansible_user=administrator
 ansible_ssh_pass=adminpassword
 ansible_sudo_pass=adminpassword
 
 # Combine all ssee groups to a single group
-[ssee_hosts]
+[ssee_hosts:children]
 group1
 group2

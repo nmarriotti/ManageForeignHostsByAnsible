@@ -44,7 +44,7 @@
     name: "{{ ANSIBLE_USER }}"
     shell: "{{ ANSIBLE_SHELL }}"
     groups: "{{ ANSIBLE_GROUPS }}"
-    uid: "{{ ANSIBLE_UID }}"
+    #uid: "{{ ANSIBLE_UID }}"
     password: "{{ ANSIBLE_PASS | password_hash('sha512') }}"
     update_password: on_create
     create_home: true

@@ -36,7 +36,7 @@
         state: enabled
       notify:
         - restart_firewalld
-      when: packages.changed
+      #when: packages.changed
 
     - name: Restart HTTPD
       service:

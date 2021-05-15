@@ -52,7 +52,7 @@
 
 # Connect using remote host local credentials
 - name: CONFIGURE HOSTS TO BE MANAGED BY ANSIBLE
-  hosts: all
+  hosts: ssee_hosts
   become: true
   roles:
     - configure_ansible_user

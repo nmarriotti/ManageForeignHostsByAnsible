@@ -18,3 +18,8 @@ ansible_sudo_pass=adminpassword
 ansible_user=administrator
 ansible_ssh_pass=adminpassword
 ansible_sudo_pass=adminpassword
+
+# Combine all ssee groups to a single group
+[ssee_hosts]
+group1
+group2
